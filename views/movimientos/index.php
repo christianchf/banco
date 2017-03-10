@@ -32,4 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'importe:currency',
         ],
     ]); ?>
+    <?php if ($cuenta->saldo >= 0) { ?>
+        <p class="text-right">Total: <?= $cuenta->saldo ?> €</p><?php
+    } else { ?>
+        <p class="text-right text-danger">Total: <?= $cuenta->saldo ?> €</p><?php
+    } ?>
 </div>

@@ -41,7 +41,7 @@ class MovimientosController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Movimiento::find()->where(['id_cuenta' => $id_cuenta])->orderBy('fecha_aparicion asc'),
         ]);
-        $cuenta = Cuenta::find()->where(['id' => $id_cuenta])->one();
+        $cuenta = Cuenta::findSaldo()->where(['cuentas.id' => $id_cuenta])->one();
 
         if ($cuenta === null) {
             throw new NotFoundHttpException('La cuenta no existe.');
