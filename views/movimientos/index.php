@@ -26,10 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_cuenta',
+            'idCuenta.num_cuenta',
             'fecha_aparicion:datetime',
             'concepto',
-            'importe',
+            'importe:currency',
         ],
     ]); ?>
 </div>

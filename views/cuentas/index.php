@@ -19,7 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             'id',
+            'num_cuenta',
             'fecha_apertura:datetime',
+            'saldo:currency',
             [
                 'label' => 'Movimientos',
                 'value' => function ($model, $key, $index, $column) {

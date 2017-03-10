@@ -16,6 +16,7 @@ use Yii;
  */
 class Cuenta extends \yii\db\ActiveRecord
 {
+    public $saldo;
     /**
      * @inheritdoc
      */
@@ -31,6 +32,8 @@ class Cuenta extends \yii\db\ActiveRecord
     {
         return [
             [['fecha_apertura'], 'safe'],
+            [['num_cuenta'], 'safe'],
+            [['saldo'], 'safe'],
             [['id_usuario'], 'integer'],
             [['id_usuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['id_usuario' => 'id']],
         ];
@@ -44,7 +47,9 @@ class Cuenta extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'fecha_apertura' => 'Fecha Apertura',
+            'num_cuenta' => 'Nº Cuenta',
             'id_usuario' => 'Id Usuario',
+            'saldo' => 'Saldo total',
         ];
     }
 
@@ -62,5 +67,13 @@ class Cuenta extends \yii\db\ActiveRecord
     public function getMovimientos()
     {
         return $this->hasMany(Movimiento::className(), ['id_cuenta' => 'id'])->inverseOf('idCuenta');
+    }
+
+    public static function findSaldo()
+    {
+        return self::find()
+            ->select('cuentas.*, sum(importe) as saldo')
+            ->joinWith('movimientos')
+            ->groupBy('cuentas.id');
     }
 }

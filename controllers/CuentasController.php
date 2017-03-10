@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Cuenta;
+use app\models\CuentaForm;
 use app\models\CuentaSearch;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\grid\GridView;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -49,10 +51,33 @@ class CuentasController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Cuenta::find()->where(['id_usuario' => Yii::$app->user->id]),
+            'query' => Cuenta::findSaldo()->where(['id_usuario' => Yii::$app->user->id]),
         ]);
 
         return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionBuscar()
+    {
+        $model = new CuentaForm;
+
+        return $this->render('buscar', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCuentas($q)
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Cuenta::find()
+                        ->where(['ilike', 'num_cuenta', $q])
+                        ->andWhere(['id_usuario' => Yii::$app->user->id]),
+            'pagination' => false,
+            'sort' => false,
+        ]);
+        return $this->renderAjax('_cuentas', [
             'dataProvider' => $dataProvider,
         ]);
     }
